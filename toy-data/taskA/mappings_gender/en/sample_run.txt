@@ -1,0 +1,15 @@
+1001	Q0	101	1	0.95	sample_system
+1001	Q0	102	2	0.85	sample_system
+1001	Q0	103	3	0.75	sample_system
+1001	Q0	104	4	0.65	sample_system
+1001	Q0	105	5	0.55	sample_system
+1002	Q0	102	1	0.92	sample_system
+1002	Q0	101	2	0.88	sample_system
+1002	Q0	103	3	0.70	sample_system
+1002	Q0	104	4	0.60	sample_system
+1002	Q0	105	5	0.50	sample_system
+1003	Q0	103	1	0.90	sample_system
+1003	Q0	104	2	0.80	sample_system
+1003	Q0	101	3	0.70	sample_system
+1003	Q0	102	4	0.60	sample_system
+1003	Q0	105	5	0.55	sample_system
