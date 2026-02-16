@@ -45,6 +45,10 @@ cd talentclef26_evaluation_script
 - pandas
 - ranx
 
+## Toy Data
+
+The repository includes toy data for testing in the `toy-data/` directory. 
+
 ## Usage
 
 ### Basic Command
@@ -247,88 +251,6 @@ Example:
 
 Will be released with Task B evaluation script. 
 
-## Toy Data
-
-The repository includes toy data for testing in the `toy-data/` directory. 
-
-
-### Testing with Toy Data
-
-#### Task A
-
-<details>
-<summary><b>Monolingual (English)</b></summary>
-
-```bash
-python talentclef_evaluate.py \
-  --task A \
-  --lang-mode en \
-  --qrels toy-data/taskA/en/qrels.tsv \
-  --run toy-data/taskA/en/sample_run.txt
-```
-
-</details>
-
-<details>
-<summary><b>Monolingual (Spanish)</b></summary>
-
-```bash
-python talentclef_evaluate.py \
-  --task A \
-  --lang-mode es \
-  --qrels toy-data/taskA/es/qrels.tsv \
-  --run toy-data/taskA/es/sample_run.txt
-```
-
-</details>
-
-<details>
-<summary><b>Cross-Lingual Evaluation (en-es)</b></summary>
-
-```bash
-python talentclef_evaluate.py \
-  --task A \
-  --lang-mode en-es \
-  --qrels toy-data/taskA/en-es/qrels.tsv \
-  --run toy-data/taskA/en-es/sample_run.txt
-```
-
-</details>
-
-<details>
-<summary><b>Gender-Specific Monolingual (English, Male only - Example)</b></summary>
-
-```bash
-python talentclef_evaluate.py \
-  --task A \
-  --lang-mode en \
-  --qrels toy-data/taskA/mappings_gender/en/qrels.tsv \
-  --run toy-data/taskA/mappings_gender/en/sample_run_external_ids.txt \
-  --mappings toy-data/taskA/mappings_gender/en \
-  --gender m
-```
-
-> ⚠️ **Note:** The --gender flag and gender-disaggregated evaluation are provided here as an EXAMPLE of how the internal evaluation system will work. Gender information and mappings will NOT be available in the public test set. This toy data demonstrates the evaluation methodology for transparency purposes only.
-
-</details>
-
-<details>
-<summary><b>Gender-Specific Monolingual (Spanish, Female only - Example)</b></summary>
-
-```bash
-python talentclef_evaluate.py \
-  --task A \
-  --lang-mode es \
-  --qrels toy-data/taskA/mappings_gender/es/qrels.tsv \
-  --run toy-data/taskA/mappings_gender/es/sample_run_external_ids.txt \
-  --mappings toy-data/taskA/mappings_gender/es \
-  --gender f
-```
-
-> ⚠️ **Note:** The --gender flag and gender-disaggregated evaluation are provided here as an EXAMPLE of how the internal evaluation system will work. Gender information and mappings will NOT be available in the public test set. This toy data demonstrates the evaluation methodology for transparency purposes only.
-
-
-</details>
 
 
 
