@@ -170,12 +170,39 @@ def evaluate_task_a(qrels, run, gender_filter=None):
 
 def evaluate_task_b(qrels, run):
     """
-    Evaluate Task B: Not yet implemented.
+    Evaluate Task B: Job-to-Skill matching.
+    Computes metrics for both binary and graded relevance scenarios.
+    
+    Args:
+        qrels: Qrels object with relevance judgments (1 or 2)
+        run: Run object with system predictions
+    
+    Returns:
+        dict: Dictionary with results for both scenarios
     """
-    print("\n" + "=" * 60)
-    print("Task B evaluation is not yet published")
-    print("=" * 60)
-    exit(0)
+    metrics = ["ndcg", "map", "mrr", "precision@5", "precision@10", "precision@100"]
+    
+    print("Running Task B evaluation...")
+    
+    # Scenario 1: Binary relevance (all relevant skills treated equally)
+    # Convert all relevance scores to 1 (relevant) vs 0 (not relevant)
+    qrels_binary_dict = {}
+    for q_id in qrels.qrels:
+        qrels_binary_dict[q_id] = {}
+        for doc_id in qrels.qrels[q_id]:
+            # Convert any positive relevance to 1
+            qrels_binary_dict[q_id][doc_id] = 1 if qrels.qrels[q_id][doc_id] > 0 else 0
+    
+    qrels_binary = Qrels(qrels_binary_dict)
+    results_binary = evaluate(qrels_binary, run, metrics)
+    
+    # Scenario 2: Graded relevance (distinguish between levels 2 and 1)
+    results_graded = evaluate(qrels, run, metrics)
+    
+    return {
+        "binary": results_binary,
+        "graded": results_graded
+    }
 
 def main():
     parser = argparse.ArgumentParser(
@@ -233,10 +260,24 @@ def main():
         results = evaluate_task_b(qrels, run)
     else:
         raise ValueError(f"Unknown task: {task}")
-
-    print("\n=== Evaluation Results ===")
-    for metric, score in results.items():
-        print(f"{metric}: {score:.4f}")
+    
+    # Display common evaluation results
+    print("\n" + "=" * 60)
+    print("EVALUATION RESULTS")
+    print("=" * 60)
+    
+    if task == "A":
+        for metric, score in results.items():
+            print(f"{metric}: {score:.4f}")
+    elif task == "B":
+        print("\n--- General Relevance (1 or 2 → relevant) ---")
+        for metric, score in results["binary"].items():
+            print(f"{metric}: {score:.4f}")
+        
+        print("\n--- Graded Relevance (2 = core skill, 1 = contextual skill) ---")
+        for metric, score in results["graded"].items():
+            print(f"{metric}: {score:.4f}")
+    
     print("=" * 60)
 
 if __name__ == "__main__":

@@ -10,7 +10,8 @@ The TalentCLEF 2026 evaluation script supports:
   - Cross-lingual evaluation (English-Spanish)
   - Gender-aware evaluation
 - [**Task B**: Job-Skill Matching with Skill Type Classification](https://talentclef.github.io/talentclef/docs/talentclef-2026/task-summary/#task-b-job-skill-matching-with-skill-type-classification)
-  - Evaluation to be published
+  - General relevance evaluation (binary: relevant vs. not relevant)
+  - Graded relevance evaluation (core skills vs. contextual skills vs. not relevant)
 
 
 ## Setting Up the Evaluation Environment
@@ -185,6 +186,24 @@ python talentclef_evaluate.py \
 
 </details>
 
+<details>
+<summary><b>9. Task B Evaluation - Job-to-Skill Matching</b></summary>
+
+Evaluate job titles against skill corpus. Task B provides two evaluation scenarios:
+- **General Relevance**: All relevant skills (levels 1 or 2) are treated equally
+- **Graded Relevance**: Distinguishes between core skills (level 2) and contextual skills (level 1). 
+
+```bash
+python talentclef_evaluate.py \
+  --task B \
+  --qrels toy-data/taskB/qrels.tsv \
+  --run toy-data/taskB/sample_run.txt
+```
+
+**Note:** Task B does not require `--lang-mode` as it focuses on skill matching rather than multilingual document matching.
+
+</details>
+
 ## Multilingual and Gender-Aware Evaluation
 
 ### Language Modes
@@ -214,6 +233,21 @@ Example:
 - `iter`: Iteration (always 0 for standard TREC format)
 - `doc_id`: Document/CV identifier
 - `relevance`: Relevance judgment (1 = relevant, 0 = not relevant)
+
+**Task B Qrels Format:**
+
+For Task B (Job-to-Skill matching), the qrels file uses graded relevance:
+
+```
+toy_qb_jt_1    0    toy_cb_sk_1    2
+toy_qb_jt_1    0    toy_cb_sk_2    2
+toy_qb_jt_1    0    toy_cb_sk_5    1
+```
+
+- `query_id`: Job title identifier
+- `iter`: Iteration (always 0)
+- `doc_id`: Skill identifier
+- `relevance`: Relevance level (2 = core skill, 1 = contextual skill, 0 = not relevant)
 
 ### Run File (System Output)
 
@@ -249,7 +283,30 @@ Example:
 
 ### Task B Metrics
 
-Will be released with Task B evaluation script. 
+Task B evaluation computes metrics for two scenarios:
+
+#### General Relevance (Binary)
+All skills marked as relevant (1 or 2) are treated equally:
+- **NDCG** (Normalized Discounted Cumulative Gain)
+- **MAP** (Mean Average Precision)
+- **MRR** (Mean Reciprocal Rank)
+- **Precision@5**: Precision at rank 5
+- **Precision@10**: Precision at rank 10
+- **Precision@100**: Precision at rank 100
+
+#### Graded Relevance
+Distinguishes between skill types (2 = core skill, 1 = contextual skill):
+- **NDCG** (Normalized Discounted Cumulative Gain) - gives higher weight to core skills
+- **MAP** (Mean Average Precision)
+- **MRR** (Mean Reciprocal Rank)
+- **Precision@5**: Precision at rank 5
+- **Precision@10**: Precision at rank 10
+- **Precision@100**: Precision at rank 100
+
+**Relevance Levels:**
+- **2**: Core skill
+- **1**: Contextual skill
+- **0**: Not relevant 
 
 
 
